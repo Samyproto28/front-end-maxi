@@ -1,0 +1,1 @@
+const n=t=>t==null||isNaN(t)?"":new Intl.NumberFormat("es-AR",{minimumFractionDigits:0,maximumFractionDigits:0}).format(t),r=(t,i=2)=>t==null||isNaN(t)?"":new Intl.NumberFormat("es-AR",{style:"percent",minimumFractionDigits:i,maximumFractionDigits:i}).format(t/100);export{r as a,n as f};
