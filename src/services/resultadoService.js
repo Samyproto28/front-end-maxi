@@ -41,7 +41,7 @@ const resultadoService = {
    * @endpoint GET /api/v1/resultados/provincial/{provinciaId}
    */
   getProvincial(provinciaId, params) {
-    return api.get(`/resultados/provincial/${provinciaId}`, { params }).then(res => res.data.data);
+    return api.get(`/resultados/provincial/${provinciaId}`, { params }).then(res => res.data);
   },
 
   /**
@@ -51,7 +51,7 @@ const resultadoService = {
    * @endpoint GET /api/v1/resultados/nacional
    */
   getNacional(params) {
-    return api.get('/resultados/nacional', { params }).then(res => res.data.data);
+    return api.get('/resultados/nacional', { params }).then(res => res.data);
   },
 
   /**
@@ -62,7 +62,7 @@ const resultadoService = {
    * @endpoint GET /api/v1/resultados/candidato/{candidatoId}
    */
   getByCandidato(candidatoId, params) {
-    return api.get(`/resultados/candidato/${candidatoId}`, { params }).then(res => res.data.data);
+    return api.get(`/resultados/candidato/${candidatoId}`, { params }).then(res => res.data);
   },
 
   /**
@@ -73,7 +73,7 @@ const resultadoService = {
    * @endpoint GET /api/v1/resultados/lista/{listaId}
    */
   getByLista(listaId, params) {
-    return api.get(`/resultados/lista/${listaId}`, { params }).then(res => res.data.data);
+    return api.get(`/resultados/lista/${listaId}`, { params }).then(res => res.data);
   },
 
   /**
@@ -83,7 +83,7 @@ const resultadoService = {
    * @endpoint GET /api/v1/resultados/participacion
    */
   getParticipacion(params) {
-    return api.get('/resultados/participacion', { params }).then(res => res.data.data);
+    return api.get('/resultados/participacion', { params }).then(res => res.data);
   },
 
   /**
@@ -93,7 +93,7 @@ const resultadoService = {
    * @endpoint GET /api/v1/resultados/ranking-listas
    */
   getRankingListas(params) {
-    return api.get('/resultados/ranking-listas', { params }).then(res => res.data.data);
+    return api.get('/resultados/ranking-listas', { params }).then(res => res.data);
   },
 
   /**
@@ -103,7 +103,7 @@ const resultadoService = {
    * @endpoint GET /api/v1/resultados/resumen
    */
   getResumen(params) {
-    return api.get('/resultados/resumen', { params }).then(res => res.data.data);
+    return api.get('/resultados/resumen', { params }).then(res => res.data);
   },
 
   /**
