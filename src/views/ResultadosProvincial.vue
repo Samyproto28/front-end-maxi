@@ -145,6 +145,19 @@
             </AppCard>
           </div>
 
+          <!-- Gráfico de Resultados -->
+          <AppCard title="Resultados por Lista" class="mb-6">
+            <div class="h-96">
+              <GraficoBarras
+                :labels="labelsGrafico"
+                :datasets="datasetsGrafico"
+                title="Votos por Lista"
+                :height="380"
+                :horizontal="true"
+              />
+            </div>
+          </AppCard>
+
           <!-- Results Table -->
           <AppCard title="Resultados por Lista">
             <ResultadosListaTable
@@ -176,6 +189,7 @@ import AppSelect from '@/components/common/AppSelect.vue'
 import AppButton from '@/components/common/AppButton.vue'
 import AppSpinner from '@/components/common/AppSpinner.vue'
 import ResultadosListaTable from '@/components/tables/ResultadosListaTable.vue'
+import GraficoBarras from '@/components/charts/GraficoBarras.vue'
 
 // Stores
 import { useResultadoStore } from '@/stores/resultadoStore'
@@ -281,6 +295,19 @@ const resumen = computed(() => {
     votosValidos,
     votosValidosPorcentaje: votosEmitidos > 0 ? (votosValidos / votosEmitidos) * 100 : 0
   }
+})
+
+// Computed para gráfico
+const labelsGrafico = computed(() => {
+  return listas.value.map(l => l.nombre)
+})
+
+const datasetsGrafico = computed(() => {
+  return [{
+    label: 'Votos',
+    data: listas.value.map(l => l.votos),
+    backgroundColor: '#3B82F6'
+  }]
 })
 
 // Methods

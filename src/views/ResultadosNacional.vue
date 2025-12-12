@@ -83,6 +83,38 @@
 
         <!-- Results Content -->
         <template v-else>
+          <!-- Gráficos -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <!-- Gráfico Ranking Nacional -->
+            <AppCard title="Ranking Nacional de Listas">
+              <div class="h-96">
+                <GraficoRanking
+                  v-if="rankingData.length > 0"
+                  :listas="rankingData"
+                  :height="380"
+                />
+                <div v-else class="flex items-center justify-center h-full text-gray-500">
+                  No hay datos disponibles
+                </div>
+              </div>
+            </AppCard>
+
+            <!-- Gráfico Distribución Nacional -->
+            <AppCard title="Distribución Nacional de Votos">
+              <div class="h-96">
+                <GraficoTorta
+                  v-if="labelsTorta.length > 0"
+                  :labels="labelsTorta"
+                  :data="dataTorta"
+                  :height="380"
+                />
+                <div v-else class="flex items-center justify-center h-full text-gray-500">
+                  No hay datos disponibles
+                </div>
+              </div>
+            </AppCard>
+          </div>
+
           <!-- National Ranking Table -->
           <AppCard title="Ranking Nacional de Listas" class="mb-6">
             <AppTable
@@ -204,6 +236,8 @@ import AppSelect from '@/components/common/AppSelect.vue'
 import AppButton from '@/components/common/AppButton.vue'
 import AppSpinner from '@/components/common/AppSpinner.vue'
 import AppTable from '@/components/common/AppTable.vue'
+import GraficoRanking from '@/components/charts/GraficoRanking.vue'
+import GraficoTorta from '@/components/charts/GraficoTorta.vue'
 
 // Stores
 import { useResultadoStore } from '@/stores/resultadoStore'
@@ -328,6 +362,15 @@ const participacionData = computed(() => {
     }
     return aValue - bValue
   })
+})
+
+// Computed para gráfico de torta
+const labelsTorta = computed(() => {
+  return rankingData.value.map(r => r.nombre)
+})
+
+const dataTorta = computed(() => {
+  return rankingData.value.map(r => r.votos)
 })
 
 // Methods

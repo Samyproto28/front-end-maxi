@@ -36,7 +36,41 @@
           </div>
         </section>
 
-        <!-- Section 2: Quick Actions -->
+        <!-- Section 2: Gráficos -->
+        <section class="mb-8">
+          <h2 class="text-xl font-semibold text-gray-900 mb-4">Visualización de Resultados</h2>
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Top 5 Listas -->
+            <AppCard title="Top 5 Listas - Ranking Nacional">
+              <div class="h-80">
+                <GraficoRanking
+                  v-if="topListas.length > 0"
+                  :listas="topListas"
+                  :height="320"
+                />
+                <div v-else class="flex items-center justify-center h-full text-gray-500">
+                  No hay datos disponibles
+                </div>
+              </div>
+            </AppCard>
+
+            <!-- Participación por Provincia -->
+            <AppCard title="Participación por Provincia">
+              <div class="h-80">
+                <GraficoParticipacion
+                  v-if="provinciasData.length > 0"
+                  :provincias="provinciasData"
+                  :height="320"
+                />
+                <div v-else class="flex items-center justify-center h-full text-gray-500">
+                  No hay datos disponibles
+                </div>
+              </div>
+            </AppCard>
+          </div>
+        </section>
+
+        <!-- Section 3: Quick Actions -->
         <section class="mb-8">
           <h2 class="text-xl font-semibold text-gray-900 mb-4">Acciones Rápidas</h2>
           <div class="flex flex-wrap gap-4">
@@ -134,6 +168,9 @@ import AppButton from '@/components/common/AppButton.vue'
 import AppTable from '@/components/common/AppTable.vue'
 import AppSpinner from '@/components/common/AppSpinner.vue'
 import AppAlert from '@/components/common/AppAlert.vue'
+import AppCard from '@/components/common/AppCard.vue'
+import GraficoRanking from '@/components/charts/GraficoRanking.vue'
+import GraficoParticipacion from '@/components/charts/GraficoParticipacion.vue'
 
 // Stores
 import { useResultadoStore } from '@/stores/resultadoStore'
@@ -186,6 +223,39 @@ const telegramasPendientes = computed(() => {
 const participacionNacional = computed(() => {
   // Get from resultadoStore
   return resultadoStore.participacionPorcentaje || 0
+})
+
+// Top 5 listas para gráfico
+const topListas = computed(() => {
+  const listas = resultadoStore.listasMasVotadas || []
+  return listas.slice(0, 5).map(lista => ({
+    id: lista.id,
+    nombre: lista.nombre,
+    votos: lista.votos || 0,
+    porcentaje: lista.porcentaje || 0,
+    bancas: lista.bancas || 0
+  }))
+})
+
+// Datos de provincias para gráfico
+const provinciasData = computed(() => {
+  // Placeholder data - en un caso real vendría del backend
+  const resultadoNacional = resultadoStore.resultadoNacional
+  if (resultadoNacional && resultadoNacional.provincias) {
+    return resultadoNacional.provincias.map(p => ({
+      nombre: p.nombre,
+      participacion: p.participacion || 0,
+      mesas_escrutadas: p.mesas_escrutadas || 0,
+      mesas_totales: p.mesas_totales || 0
+    }))
+  }
+
+  // Datos por defecto si no hay resultados
+  return [
+    { nombre: 'Buenos Aires', participacion: 75.5, mesas_escrutadas: 150, mesas_totales: 200 },
+    { nombre: 'CABA', participacion: 78.2, mesas_escrutadas: 45, mesas_totales: 50 },
+    { nombre: 'Córdoba', participacion: 76.8, mesas_escrutadas: 60, mesas_totales: 75 }
+  ]
 })
 
 // Computed for latest telegramas (last 10, ordered by date desc)

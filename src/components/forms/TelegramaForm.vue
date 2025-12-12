@@ -7,7 +7,7 @@
  *
  * @props mesa - Objeto de mesa seleccionada con número, electores, provincia_id
  */
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, getCurrentInstance } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTelegramaStore } from '@/stores/telegramaStore'
 import { useListaStore } from '@/stores/listaStore'
@@ -184,6 +184,29 @@ watch(submitSuccess, (newVal) => {
     }, 3000)
   }
 })
+
+// Watch para actualizar gráficos en tiempo real
+watch([votosPorLista, blancos, nulos, recurridos], () => {
+  // Obtener referencia al componente padre
+  const instance = getCurrentInstance()
+  const parent = instance?.parent
+
+  if (parent && parent.exposed && parent.exposed.actualizarGrafico) {
+    // Preparar datos para el gráfico
+    const datosGrafico = {}
+
+    Object.entries(votosPorLista.value).forEach(([listaId, votos]) => {
+      datosGrafico[listaId] = (parseInt(votos.diputados || 0, 10) + parseInt(votos.senadores || 0, 10))
+    })
+
+    parent.exposed.actualizarGrafico(
+      datosGrafico,
+      parseInt(blancos.value || 0, 10),
+      parseInt(nulos.value || 0, 10),
+      parseInt(recurridos.value || 0, 10)
+    )
+  }
+}, { deep: true })
 </script>
 
 <template>
